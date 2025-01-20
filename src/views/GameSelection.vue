@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+document.title = '首页 - GoodOldGames';
 const router = useRouter()
 
 const games = ref([
@@ -29,7 +30,6 @@ const navigateToGame = (gameId: string) => {
   router.push(`/${gameId}`)
 }
 </script>
-
 <template>
   <div class="min-h-screen bg-gray-100">
     <div class="container mx-auto px-4 py-8">
@@ -49,3 +49,8 @@ const navigateToGame = (gameId: string) => {
     </div>
   </div>
 </template>
+<style>
+*{
+  font-family: 'Times New Roman', Times, serif;
+}
+</style>

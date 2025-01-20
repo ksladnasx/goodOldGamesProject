@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
+//设置标签页标题
+document.title = '俄罗斯方块';
 
 const gameCanvas = ref<HTMLCanvasElement | null>(null)
 let gameLoop: number
@@ -81,18 +83,23 @@ function handleKeyPress(event: KeyboardEvent) {
   
   switch (event.key) {
     case 'ArrowLeft':
+    case "a":
       movePiece(-1, 0)
       break
     case 'ArrowRight':
+    case "d":
       movePiece(1, 0)
       break
     case 'ArrowDown':
+    case "s":
       movePiece(0, 1)
       break
     case 'ArrowUp':
+    case "w":
       rotatePiece()
       break
     case ' ':
+    case 'e':
       hardDrop()
       break
   }
@@ -223,7 +230,12 @@ function drawGame(ctx: CanvasRenderingContext2D) {
   // Clear canvas
   ctx.fillStyle = '#1a1a1a'
   ctx.fillRect(0, 0, BOARD_WIDTH * BLOCK_SIZE, BOARD_HEIGHT * BLOCK_SIZE)
-  
+    // Draw score and level
+    ctx.fillStyle = '#ff0'; // 使用黄色字体
+  ctx.font = '20px Arial'
+  ctx.fillText(`得分: ${score.value}`, 10, 20); // 距离左上角 10px, 20px 的位置
+  ctx.fillText(`等级: ${level.value}`, 10, 40); // 距离左上角 10px, 40px 的位置
+
   // Draw board
   for (let y = 0; y < BOARD_HEIGHT; y++) {
     for (let x = 0; x < BOARD_WIDTH; x++) {
@@ -255,11 +267,8 @@ function drawGame(ctx: CanvasRenderingContext2D) {
     ctx.stroke()
   }
   
-  // Draw score and level
-  ctx.fillStyle = '#fff'
-  ctx.font = '20px Arial'
-  ctx.fillText(`得分: ${score.value}`, 320, 30)
-  ctx.fillText(`等级: ${level.value}`, 320, 60)
+  
+
   
   if (gameOver.value) {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.7)'
@@ -304,6 +313,7 @@ function resetGame() {
     <div class="mb-4 text-gray-600">
       使用方向键移动和旋转，空格键快速下落
     </div>
+    <br>
     <canvas
       ref="gameCanvas"
       width="300"
@@ -311,9 +321,15 @@ function resetGame() {
       class="border border-gray-300"
     ></canvas>
   </div>
+  <div>
+    <a href="http://localhost:5174/">返回主页</a>
+  </div>
 </template>
 
 <style scoped>
+*{
+  font-family: 'Times New Roman', Times, serif;
+}
 .game-container {
   display: flex;
   flex-direction: column;

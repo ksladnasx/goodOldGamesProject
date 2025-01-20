@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 
+//设置标签页标题
+document.title = '坦克大战';
+
 const gameCanvas = ref<HTMLCanvasElement | null>(null)
 let gameLoop: number
 
@@ -236,9 +239,10 @@ function startGame(ctx: CanvasRenderingContext2D) {
       ctx.font = '48px Arial'
       ctx.fillText('游戏结束', 300, 250)
       ctx.font = '24px Arial'
-      ctx.fillText(`得分: ${score.value}`, 350, 300)
-      ctx.fillText(`最高分：${maxScore.value}`,350, 320)
-      ctx.fillText('按空格键重新开始', 310, 370)
+      ctx.fillText(`得分: ${score.value}`, 330, 300)
+      ctx.fillText(`消灭敌人数: ${score.value/100}`, 330, 350)
+      ctx.fillText(`最高分：${maxScore.value}`,330, 390)
+      ctx.fillText('按空格键重新开始', 310, 450)
 
       if (keys.value.Space) {
         resetGame()
@@ -313,6 +317,8 @@ function startGame(ctx: CanvasRenderingContext2D) {
     ctx.font = '20px Arial'
     ctx.fillText(`得分: ${score.value}`, 20, 30)
     ctx.fillText(`最高分: ${maxScore.value}`, 120, 30)
+    ctx.fillText(`敌人数量: ${enemies.value.length}`, 250, 30)
+    ctx.fillText(`消灭敌人数: ${score.value/100}`, 390, 30)
 
     gameLoop = requestAnimationFrame(() => gameUpdate())
   }
@@ -345,13 +351,20 @@ function resetGame() {
     </div>
     <canvas ref="gameCanvas" width="800" height="600" class="border border-gray-300"></canvas>
   </div>
+  <div>
+    <a href="http://localhost:5174/">返回主页</a>
+  </div>
 </template>
 
 <style scoped>
+*{
+  font-family: 'Times New Roman', Times, serif;
+}
 .game-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
+
 }
 </style>

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 
+//设置标签页标题
+document.title = '贪吃蛇';
+
 const gameCanvas = ref<HTMLCanvasElement | null>(null)
 let gameLoop: number
 
@@ -205,6 +208,7 @@ function drawGame(ctx: CanvasRenderingContext2D) {
   ctx.font = '20px Arial'
   ctx.fillText(`得分: ${score.value}`, 20, 30)
   ctx.fillText(`最高分: ${maxScore.value}`, 120, 30)
+
   
   if (gameOver.value) {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.7)'
@@ -259,13 +263,23 @@ function resetGame() {
       class="border border-gray-300"
     ></canvas>
   </div>
+  <div>
+    <a href="http://localhost:5174/">返回主页</a>
+  </div>
 </template>
 
 <style scoped>
+*{
+  font-family: 'Times New Roman', Times, serif;
+}
 .game-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
+}
+
+.text-2xl {
+  font-size: 24px;
 }
 </style>
