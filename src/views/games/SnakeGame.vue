@@ -14,9 +14,18 @@ const snake = ref<Position[]>([{ x: 10, y: 10 }])
 const direction = ref<Position>({ x: 1, y: 0 })
 const food = ref<Position>({ x: 15, y: 15 })
 const score = ref(0)
+const maxScore = ref(0)
 const gameOver = ref(false)
 const gameSpeed = ref(150)
 let lastUpdate = 0
+
+import {  watch } from 'vue';
+// 监听 score 的变化
+watch(score, (newScore) => {
+    if (newScore > maxScore.value) {
+        maxScore.value = newScore;
+    }
+});
 
 onMounted(() => {
   if (gameCanvas.value) {
@@ -195,6 +204,7 @@ function drawGame(ctx: CanvasRenderingContext2D) {
   ctx.fillStyle = '#fff'
   ctx.font = '20px Arial'
   ctx.fillText(`得分: ${score.value}`, 20, 30)
+  ctx.fillText(`最高分: ${maxScore.value}`, 120, 30)
   
   if (gameOver.value) {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.7)'
@@ -205,7 +215,8 @@ function drawGame(ctx: CanvasRenderingContext2D) {
     ctx.fillText('游戏结束', 300, 250)
     ctx.font = '24px Arial'
     ctx.fillText(`最终得分: ${score.value}`, 330, 300)
-    ctx.fillText('按空格键重新开始', 310, 350)
+    ctx.fillText(`最高得分: ${maxScore.value}`, 330, 330)
+    ctx.fillText('按空格键重新开始', 310, 370)
   }
 }
 

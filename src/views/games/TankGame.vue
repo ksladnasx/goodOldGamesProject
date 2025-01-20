@@ -238,7 +238,7 @@ function startGame(ctx: CanvasRenderingContext2D) {
       ctx.font = '24px Arial'
       ctx.fillText(`得分: ${score.value}`, 350, 300)
       ctx.fillText(`最高分：${maxScore.value}`,350, 320)
-      ctx.fillText('按空格键重新开始', 310, 350)
+      ctx.fillText('按空格键重新开始', 310, 370)
 
       if (keys.value.Space) {
         resetGame()
