@@ -91,12 +91,12 @@ function handleKeyUp(e: KeyboardEvent) {
     keys.value[e.code as keyof typeof keys.value] = false
   }
 }
-import {  watch } from 'vue';
+import { watch } from 'vue';
 // 监听 score 的变化
 watch(score, (newScore) => {
-    if (newScore > maxScore.value) {
-        maxScore.value = newScore;
-    }
+  if (newScore > maxScore.value) {
+    maxScore.value = newScore;
+  }
 });
 function drawTank(ctx: CanvasRenderingContext2D, x: number, y: number, direction: number, isPlayer: boolean) {
   ctx.save()
@@ -143,7 +143,7 @@ function generateNewEnemies() {
   // 生成新的敌人
   for (let i = 0; i < enemyCount.value; i++) {
     const startX = 100 + (i * 20); // 每个敌人之间的起始位置间隔
-     enemies.value.push({
+    enemies.value.push({
       x: startX,
       y: 100,
       direction: 2,
@@ -240,8 +240,8 @@ function startGame(ctx: CanvasRenderingContext2D) {
       ctx.fillText('游戏结束', 300, 250)
       ctx.font = '24px Arial'
       ctx.fillText(`得分: ${score.value}`, 330, 300)
-      ctx.fillText(`消灭敌人数: ${score.value/100}`, 330, 350)
-      ctx.fillText(`最高分：${maxScore.value}`,330, 390)
+      ctx.fillText(`消灭敌人数: ${score.value / 100}`, 330, 350)
+      ctx.fillText(`最高分：${maxScore.value}`, 330, 390)
       ctx.fillText('按空格键重新开始', 310, 450)
 
       if (keys.value.Space) {
@@ -318,7 +318,7 @@ function startGame(ctx: CanvasRenderingContext2D) {
     ctx.fillText(`得分: ${score.value}`, 20, 30)
     ctx.fillText(`最高分: ${maxScore.value}`, 120, 30)
     ctx.fillText(`敌人数量: ${enemies.value.length}`, 250, 30)
-    ctx.fillText(`消灭敌人数: ${score.value/100}`, 390, 30)
+    ctx.fillText(`消灭敌人数: ${score.value / 100}`, 390, 30)
 
     gameLoop = requestAnimationFrame(() => gameUpdate())
   }
@@ -351,15 +351,45 @@ function resetGame() {
     </div>
     <canvas ref="gameCanvas" width="800" height="600" class="border border-gray-300"></canvas>
   </div>
-  <div>
-    <a href="http://localhost:5174/">返回主页</a>
+  <div><a href="http://localhost:5174/">
+      <button>
+        返回主页
+      </button></a>
   </div>
 </template>
 
 <style scoped>
-*{
+* {
   font-family: 'Times New Roman', Times, serif;
 }
+
+button {
+  background-color: #4CAF50;
+  /* 绿色背景 */
+  border: none;
+  /* 无边框 */
+  color: white;
+  /* 白色文字 */
+  padding: 10px 20px;
+  /* 内边距 */
+  text-align: center;
+  /* 文本居中 */
+  text-decoration: none;
+  /* 无下划线 */
+  display: inline-block;
+  /* 行内块元素 */
+  font-size: 16px;
+  /* 字体大小 */
+  margin: 4px 2px;
+  /* 外边距 */
+  cursor: pointer;
+  /* 鼠标悬停时显示指针 */
+  border-radius: 8px;
+  /* 圆角边框 */
+  transition: background-color 0.3s;
+  /* 背景色过渡效果 */
+}
+
 .game-container {
   display: flex;
   flex-direction: column;

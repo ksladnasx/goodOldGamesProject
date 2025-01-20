@@ -48,9 +48,39 @@ const navigateToGame = (gameId: string) => {
       </div>
     </div>
   </div>
+  <div><a href="http://localhost:5173/">
+      <button>
+        更好的俄罗斯方块
+      </button></a>
+  </div>
 </template>
 <style>
 *{
   font-family: 'Times New Roman', Times, serif;
+}
+button {
+
+  border: none;
+  /* 无边框 */
+  color: white;
+  /* 白色文字 */
+  padding: 10px 20px;
+  /* 内边距 */
+  text-align: center;
+  /* 文本居中 */
+  text-decoration: none;
+  /* 无下划线 */
+  display: inline-block;
+  /* 行内块元素 */
+  font-size: 16px;
+  /* 字体大小 */
+  margin: 4px 2px;
+  /* 外边距 */
+  cursor: pointer;
+  /* 鼠标悬停时显示指针 */
+  border-radius: 8px;
+  /* 圆角边框 */
+  transition: background-color 0.3s;
+  /* 背景色过渡效果 */
 }
 </style>

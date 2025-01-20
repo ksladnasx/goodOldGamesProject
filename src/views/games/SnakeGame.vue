@@ -22,12 +22,12 @@ const gameOver = ref(false)
 const gameSpeed = ref(150)
 let lastUpdate = 0
 
-import {  watch } from 'vue';
+import { watch } from 'vue';
 // 监听 score 的变化
 watch(score, (newScore) => {
-    if (newScore > maxScore.value) {
-        maxScore.value = newScore;
-    }
+  if (newScore > maxScore.value) {
+    maxScore.value = newScore;
+  }
 });
 
 onMounted(() => {
@@ -67,20 +67,20 @@ function handleKeyPress(event: KeyboardEvent) {
     case 'e':
       if (gameOver.value) resetGame()
       break
-    
+
   }
 }
 
 function generateFood() {
   const maxX = Math.floor(800 / gridSize)
   const maxY = Math.floor(600 / gridSize)
-  
+
   while (true) {
     const newFood = {
       x: Math.floor(Math.random() * maxX),
       y: Math.floor(Math.random() * maxY)
     }
-    
+
     // Check if food spawns on snake
     if (!snake.value.some(segment => segment.x === newFood.x && segment.y === newFood.y)) {
       food.value = newFood
@@ -94,7 +94,7 @@ function checkCollision(head: Position): boolean {
   if (head.x < 0 || head.x >= 800 / gridSize || head.y < 0 || head.y >= 600 / gridSize) {
     return true
   }
-  
+
   // Self collision
   return snake.value.some(segment => segment.x === head.x && segment.y === head.y)
 }
@@ -103,14 +103,14 @@ function updateGame() {
   const head = { ...snake.value[0] }
   head.x += direction.value.x
   head.y += direction.value.y
-  
+
   if (checkCollision(head)) {
     gameOver.value = true
     return
   }
-  
+
   snake.value.unshift(head)
-  
+
   if (head.x === food.value.x && head.y === food.value.y) {
     score.value += 10
     gameSpeed.value = Math.max(50, gameSpeed.value - 5)
@@ -124,7 +124,7 @@ function drawGame(ctx: CanvasRenderingContext2D) {
   // Clear canvas
   ctx.fillStyle = '#1a1a1a'
   ctx.fillRect(0, 0, 800, 600)
-  
+
   // Draw grid
   ctx.strokeStyle = '#333'
   for (let i = 0; i < 800; i += gridSize) {
@@ -132,7 +132,7 @@ function drawGame(ctx: CanvasRenderingContext2D) {
       ctx.strokeRect(i, j, gridSize, gridSize)
     }
   }
-  
+
   // Draw snake
   snake.value.forEach((segment, index) => {
     const gradient = ctx.createLinearGradient(
@@ -143,7 +143,7 @@ function drawGame(ctx: CanvasRenderingContext2D) {
     )
     gradient.addColorStop(0, '#4CAF50')
     gradient.addColorStop(1, '#2E7D32')
-    
+
     ctx.fillStyle = gradient
     ctx.fillRect(
       segment.x * gridSize,
@@ -151,13 +151,13 @@ function drawGame(ctx: CanvasRenderingContext2D) {
       gridSize - 1,
       gridSize - 1
     )
-    
+
     // Draw snake eyes
     if (index === 0) {
       ctx.fillStyle = '#fff'
       const eyeSize = 4
       const eyeOffset = 5
-      
+
       // Position eyes based on direction
       if (direction.value.x !== 0) {
         ctx.fillRect(
@@ -188,7 +188,7 @@ function drawGame(ctx: CanvasRenderingContext2D) {
       }
     }
   })
-  
+
   // Draw food
   const foodX = food.value.x * gridSize
   const foodY = food.value.y * gridSize
@@ -202,18 +202,18 @@ function drawGame(ctx: CanvasRenderingContext2D) {
     Math.PI * 2
   )
   ctx.fill()
-  
+
   // Draw score
   ctx.fillStyle = '#fff'
   ctx.font = '20px Arial'
   ctx.fillText(`得分: ${score.value}`, 20, 30)
   ctx.fillText(`最高分: ${maxScore.value}`, 120, 30)
 
-  
+
   if (gameOver.value) {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.7)'
     ctx.fillRect(0, 0, 800, 600)
-    
+
     ctx.fillStyle = '#fff'
     ctx.font = '48px Arial'
     ctx.fillText('游戏结束', 300, 250)
@@ -232,11 +232,11 @@ function startGame(ctx: CanvasRenderingContext2D) {
       }
       lastUpdate = timestamp
     }
-    
+
     drawGame(ctx)
     gameLoop = requestAnimationFrame(gameUpdate)
   }
-  
+
   gameUpdate(0)
 }
 
@@ -256,22 +256,47 @@ function resetGame() {
     <div class="mb-4 text-gray-600">
       使用方向键控制蛇的移动
     </div>
-    <canvas
-      ref="gameCanvas"
-      width="800"
-      height="600"
-      class="border border-gray-300"
-    ></canvas>
+    <canvas ref="gameCanvas" width="800" height="600" class="border border-gray-300"></canvas>
   </div>
-  <div>
-    <a href="http://localhost:5174/">返回主页</a>
+  <div><a href="http://localhost:5174/">
+      <button>
+        返回主页
+      </button></a>
   </div>
 </template>
 
 <style scoped>
-*{
+button {
+  background-color: #4CAF50;
+  /* 绿色背景 */
+  border: none;
+  /* 无边框 */
+  color: white;
+  /* 白色文字 */
+  padding: 10px 20px;
+  /* 内边距 */
+  text-align: center;
+  /* 文本居中 */
+  text-decoration: none;
+  /* 无下划线 */
+  display: inline-block;
+  /* 行内块元素 */
+  font-size: 16px;
+  /* 字体大小 */
+  margin: 4px 2px;
+  /* 外边距 */
+  cursor: pointer;
+  /* 鼠标悬停时显示指针 */
+  border-radius: 8px;
+  /* 圆角边框 */
+  transition: background-color 0.3s;
+  /* 背景色过渡效果 */
+}
+
+* {
   font-family: 'Times New Roman', Times, serif;
 }
+
 .game-container {
   display: flex;
   flex-direction: column;

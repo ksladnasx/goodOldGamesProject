@@ -80,7 +80,7 @@ function handleKeyPress(event: KeyboardEvent) {
     if (event.key === ' ') resetGame()
     return
   }
-  
+
   switch (event.key) {
     case 'ArrowLeft':
     case "a":
@@ -111,7 +111,7 @@ function spawnNewPiece() {
     blocks: pieceType.blocks.map(block => ({ x: block.x + 3, y: block.y })),
     color: pieceType.color
   }
-  
+
   if (!isValidMove(currentPiece.value.blocks)) {
     gameOver.value = true
   }
@@ -120,66 +120,66 @@ function spawnNewPiece() {
 function isValidMove(blocks: Block[]): boolean {
   return blocks.every(block => {
     return block.x >= 0 &&
-           block.x < BOARD_WIDTH &&
-           block.y >= 0 &&
-           block.y < BOARD_HEIGHT &&
-           !board.value[block.y]?.[block.x]
+      block.x < BOARD_WIDTH &&
+      block.y >= 0 &&
+      block.y < BOARD_HEIGHT &&
+      !board.value[block.y]?.[block.x]
   })
 }
 
 function movePiece(dx: number, dy: number): boolean {
   if (!currentPiece.value) return false
-  
+
   const newBlocks = currentPiece.value.blocks.map(block => ({
     x: block.x + dx,
     y: block.y + dy
   }))
-  
+
   if (isValidMove(newBlocks)) {
     currentPiece.value.blocks = newBlocks
     return true
   }
-  
+
   if (dy > 0) {
     placePiece()
     return false
   }
-  
+
   return false
 }
 
 function rotatePiece() {
   if (!currentPiece.value) return
-  
+
   const center = currentPiece.value.blocks[1]
   const newBlocks = currentPiece.value.blocks.map(block => ({
     x: center.x - (block.y - center.y),
     y: center.y + (block.x - center.x)
   }))
-  
+
   if (isValidMove(newBlocks)) {
     currentPiece.value.blocks = newBlocks
   }
 }
 
 function hardDrop() {
-  while (movePiece(0, 1)) {}
+  while (movePiece(0, 1)) { }
 }
 
 function placePiece() {
   if (!currentPiece.value) return
-  
+
   currentPiece.value.blocks.forEach(block => {
     board.value[block.y][block.x] = currentPiece.value!.color
   })
-  
+
   clearLines()
   spawnNewPiece()
 }
 
 function clearLines() {
   let linesCleared = 0
-  
+
   for (let y = BOARD_HEIGHT - 1; y >= 0; y--) {
     if (board.value[y].every(cell => cell)) {
       board.value.splice(y, 1)
@@ -188,7 +188,7 @@ function clearLines() {
       y++
     }
   }
-  
+
   if (linesCleared > 0) {
     score.value += [0, 100, 300, 500, 800][linesCleared] * level.value
     level.value = Math.floor(score.value / 1000) + 1
@@ -205,10 +205,10 @@ function drawBlock(ctx: CanvasRenderingContext2D, x: number, y: number, color: s
   )
   gradient.addColorStop(0, color)
   gradient.addColorStop(1, adjustColor(color, -30))
-  
+
   ctx.fillStyle = gradient
   ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE - 1, BLOCK_SIZE - 1)
-  
+
   // Highlight
   ctx.strokeStyle = adjustColor(color, 50)
   ctx.beginPath()
@@ -230,8 +230,8 @@ function drawGame(ctx: CanvasRenderingContext2D) {
   // Clear canvas
   ctx.fillStyle = '#1a1a1a'
   ctx.fillRect(0, 0, BOARD_WIDTH * BLOCK_SIZE, BOARD_HEIGHT * BLOCK_SIZE)
-    // Draw score and level
-    ctx.fillStyle = '#ff0'; // 使用黄色字体
+  // Draw score and level
+  ctx.fillStyle = '#ff0'; // 使用黄色字体
   ctx.font = '20px Arial'
   ctx.fillText(`得分: ${score.value}`, 10, 20); // 距离左上角 10px, 20px 的位置
   ctx.fillText(`等级: ${level.value}`, 10, 40); // 距离左上角 10px, 40px 的位置
@@ -244,14 +244,14 @@ function drawGame(ctx: CanvasRenderingContext2D) {
       }
     }
   }
-  
+
   // Draw current piece
   if (currentPiece.value) {
     currentPiece.value.blocks.forEach(block => {
       drawBlock(ctx, block.x, block.y, currentPiece.value!.color)
     })
   }
-  
+
   // Draw grid
   ctx.strokeStyle = '#333'
   for (let i = 0; i <= BOARD_WIDTH; i++) {
@@ -266,14 +266,14 @@ function drawGame(ctx: CanvasRenderingContext2D) {
     ctx.lineTo(BOARD_WIDTH * BLOCK_SIZE, i * BLOCK_SIZE)
     ctx.stroke()
   }
-  
-  
 
-  
+
+
+
   if (gameOver.value) {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.7)'
     ctx.fillRect(0, 0, BOARD_WIDTH * BLOCK_SIZE, BOARD_HEIGHT * BLOCK_SIZE)
-    
+
     ctx.fillStyle = '#fff'
     ctx.font = '48px Arial'
     ctx.fillText('游戏结束', 50, 250)
@@ -289,11 +289,11 @@ function startGame(ctx: CanvasRenderingContext2D) {
       movePiece(0, 1)
       lastDrop = timestamp
     }
-    
+
     drawGame(ctx)
     gameLoop = requestAnimationFrame(gameUpdate)
   }
-  
+
   gameUpdate(0)
 }
 
@@ -314,22 +314,47 @@ function resetGame() {
       使用方向键移动和旋转，空格键快速下落
     </div>
     <br>
-    <canvas
-      ref="gameCanvas"
-      width="300"
-      height="600"
-      class="border border-gray-300"
-    ></canvas>
+    <canvas ref="gameCanvas" width="300" height="600" class="border border-gray-300"></canvas>
   </div>
-  <div>
-    <a href="http://localhost:5174/">返回主页</a>
+  <div><a href="http://localhost:5174/">
+      <button>
+        返回主页
+      </button></a>
   </div>
 </template>
 
 <style scoped>
-*{
+* {
   font-family: 'Times New Roman', Times, serif;
 }
+
+button {
+  background-color: #4CAF50;
+  /* 绿色背景 */
+  border: none;
+  /* 无边框 */
+  color: white;
+  /* 白色文字 */
+  padding: 10px 20px;
+  /* 内边距 */
+  text-align: center;
+  /* 文本居中 */
+  text-decoration: none;
+  /* 无下划线 */
+  display: inline-block;
+  /* 行内块元素 */
+  font-size: 16px;
+  /* 字体大小 */
+  margin: 4px 2px;
+  /* 外边距 */
+  cursor: pointer;
+  /* 鼠标悬停时显示指针 */
+  border-radius: 8px;
+  /* 圆角边框 */
+  transition: background-color 0.3s;
+  /* 背景色过渡效果 */
+}
+
 .game-container {
   display: flex;
   flex-direction: column;
